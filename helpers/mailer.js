@@ -56,6 +56,7 @@ export const sendEmail = async ({ email, emailType, userId }) => {
     };
 
     const mailresponse = await transport.sendMail(mailOptions);
+
     return mailresponse;
   } catch (error) {
     throw new Error(error.message);
