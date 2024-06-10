@@ -5,14 +5,13 @@ export function middleware(request) {
   const path = request.nextUrl.pathname; // Get the current request path
 
   // Define public paths that do not require authentication
-  const isPublicPath =
-    path === "/login" || path === "/signup" || path === "/verifyemail";
+  const isPublicPath = path === "/login" || path === "/signup" || path === "/";
 
   // Retrieve the token from cookies
   const token = request.cookies.get("token")?.value || "";
 
   // If the user is authenticated and tries to access a public path, redirect to home page
-  if (isPublicPath && token) {
+  if ((path === "/login" || path === "/signup") && token) {
     return NextResponse.redirect(new URL("/", request.nextUrl));
   }
 
