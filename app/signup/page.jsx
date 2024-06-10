@@ -1,19 +1,19 @@
 "use client";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import styles from "./signup.module.css"; // Adjust the path if necessary
+import styles from "./signup.module.css";
 
 export default function SignupPage() {
   const router = useRouter();
-  const [user, setUser] = React.useState({
+  const [user, setUser] = useState({
     email: "",
     password: "",
     username: "",
   });
-  const [buttonDisabled, setButtonDisabled] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const onSignup = async () => {
     try {

@@ -27,9 +27,4 @@
   border-radius: 0.5rem;
   margin-bottom: 1rem;
   outline: none;
-  cursor: pointer;
-}
-
-.button:disabled {
-  cursor: not-allowed;
 }
