@@ -8,9 +8,7 @@ export default function Navlink({ href, children }) {
   return (
     <Link
       href={href}
-      className={
-        path.startsWith("/meals") ? `${style.link} ${style.active}` : style.link
-      }
+      className={`${path === href && style.active} ${style.link}`}
     >
       {children}
     </Link>

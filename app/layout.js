@@ -1,5 +1,6 @@
 import MainHeader from "@/components/main-header/MainHeader";
 import "./globals.css";
+import AuthProvider from "./context/AuthProvider";
 
 export const metadata = {
   title: "NextLevel Food",
@@ -9,10 +10,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
-        <MainHeader />
-        {children}
-      </body>
+      <AuthProvider>
+        <body>
+          <MainHeader />
+          {children}
+        </body>
+      </AuthProvider>
     </html>
   );
 }

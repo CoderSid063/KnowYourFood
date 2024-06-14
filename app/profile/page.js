@@ -4,15 +4,21 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./profile.module.css";
+import { signOut, useSession } from "next-auth/react";
 
 export default function ProfilePage() {
+  const { data: session, status } = useSession();
+  console.log("Profile Page Session:", session);
+  console.log("Profile Page Status:", status);
+
   const router = useRouter();
   const [data, setData] = useState("nothing");
 
   const logout = async () => {
     try {
       await axios.get("/api/users/logout");
-      router.push("/login");
+      await signOut();
+      router.push("/sign-in");
     } catch (error) {
       console.log(error.message);
     }

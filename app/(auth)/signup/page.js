@@ -3,33 +3,38 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import styles from "./login.module.css";
+import styles from "./signup.module.css";
 
-export default function LoginPage() {
+export default function SignupPage() {
   const router = useRouter();
   const [user, setUser] = useState({
     email: "",
     password: "",
+    username: "",
   });
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const onLogin = async () => {
+  const onSignup = async () => {
     try {
       setLoading(true);
-      const response = await axios.post("/api/users/login", user);
-      console.log("Login success", response.data);
-
-      router.push("/profile");
+      const response = await axios.post("/api/users/signup", user);
+      console.log(response);
+      console.log("Signup success", response.data);
+      router.push("/sign-in");
     } catch (error) {
-      console.log("Login failed", error.message);
+      console.log("Signup failed", error.message);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (user.email.length > 0 && user.password.length > 0) {
+    if (
+      user.email.length > 0 &&
+      user.password.length > 0 &&
+      user.username.length > 0
+    ) {
       setButtonDisabled(false);
     } else {
       setButtonDisabled(true);
@@ -38,8 +43,17 @@ export default function LoginPage() {
 
   return (
     <div className={styles.container}>
-      <h1>{loading ? "Processing" : "Login"}</h1>
+      <h1>{loading ? "Processing" : "Signup"}</h1>
       <hr />
+      <label htmlFor="username">Username</label>
+      <input
+        className={styles.input}
+        id="username"
+        type="text"
+        value={user.username}
+        onChange={(e) => setUser({ ...user, username: e.target.value })}
+        placeholder="username"
+      />
       <label htmlFor="email">Email</label>
       <input
         className={styles.input}
@@ -59,13 +73,13 @@ export default function LoginPage() {
         placeholder="password"
       />
       <button
-        onClick={onLogin}
+        onClick={onSignup}
         className={styles.button}
         disabled={buttonDisabled}
       >
-        Login here
+        {buttonDisabled ? "No signup" : "Signup"}
       </button>
-      <Link href="/signup">Visit Signup page</Link>
+      <Link href="/login">Visit login page</Link>
     </div>
   );
 }
