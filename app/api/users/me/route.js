@@ -12,7 +12,7 @@ export async function GET(request) {
     const user = await User.findOne({ _id: userId }).select("-password");
 
     return NextResponse.json({
-      mesaaage: "User found",
+      mesaaage: "All Meals",
       data: user,
     });
   } catch (error) {

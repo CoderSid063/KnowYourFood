@@ -2,14 +2,7 @@ import fs from "node:fs";
 import sql from "better-sqlite3";
 import slugify from "slugify";
 import xss from "xss";
-import { error } from "node:console";
 const db = sql("meals.db");
-
-export async function getMeals() {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-  // throw new Error("Loading Meals Failed");
-  return db.prepare("SELECT * FROM meals").all();
-}
 
 export function getMeal(slug) {
   return db.prepare("SELECT * FROM meals WHERE slug = ?").get(slug);

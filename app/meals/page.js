@@ -1,21 +1,43 @@
+"use client";
 import Link from "next/link";
 import style from "./page.module.css";
 import MealsGrid from "@/components/meals/meals-grid";
-import { getMeals } from "@/components/lib/meals";
-import { Suspense } from "react";
+import { useEffect, useState } from "react";
 
-export const metadata = {
-  title: "All Meals",
-  description: "Browse the delicious meals shared by our vibrant community",
-};
+function Meals() {
+  const [meals, setMeals] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-async function Meals() {
-  // getMeals() from sql data base
-  const meals = await getMeals();
+  async function fetchMeals() {
+    try {
+      const response = await fetch("/api/meals", {
+        method: "GET",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch meals");
+      }
+      const { data } = await response.json();
+      // console.log(data);
+      setMeals(data);
+    } catch (error) {
+      console.error("Failed to fetch meals:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchMeals();
+  }, []);
+
+  if (loading) {
+    return <p className={style.loading}>Fetching Meals...</p>;
+  }
+
   return <MealsGrid meals={meals} />;
 }
 
-export default async function MealsPage() {
+export default function MealsPage() {
   return (
     <>
       <header className={style.header}>
@@ -31,9 +53,7 @@ export default async function MealsPage() {
         </p>
       </header>
       <main className={style.main}>
-        <Suspense fallback={<p className={style.loading}>Fetching Meals..</p>}>
-          <Meals />
-        </Suspense>
+        <Meals />
       </main>
     </>
   );

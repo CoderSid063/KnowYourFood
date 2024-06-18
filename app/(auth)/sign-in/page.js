@@ -2,12 +2,16 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import styles from "./login.module.css";
 
 export default function LoginPage() {
   const router = useRouter();
+
+  // const searchParams = useSearchParams();
+  // const callbackUrl = searchParams.get("callbackUrl") || "/";
+  // console.log(callbackUrl);
 
   const [user, setUser] = useState({
     email: "",
@@ -27,15 +31,14 @@ export default function LoginPage() {
         password: user.password,
       });
 
-      {
-        console.log(result);
-      }
+      console.log("Sign-in result:", result);
 
       if (result?.error) {
         console.log("Login failed", result.error);
       } else {
         console.log("Login success");
-        router.push("/profile");
+        router.push("/");
+        // router.push(callbackUrl); // Redirect to the original page
       }
     } catch (error) {
       console.log("Login failed", error.message);
@@ -85,23 +88,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
-// import { useSession, signIn, signOut } from "next-auth/react";
-
-// export default function Component() {
-//   const { data: session } = useSession();
-//   if (session) {
-//     return (
-//       <>
-//         Signed in as {session.user.email} <br />
-//         <button onClick={() => signOut()}>Sign out</button>
-//       </>
-//     );
-//   }
-//   return (
-//     <>
-//       Not signed in <br />
-//       <button onClick={() => signIn()}>Sign in</button>
-//     </>
-//   );
-// }

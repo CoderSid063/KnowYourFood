@@ -10,7 +10,7 @@ function isInvalid(text) {
 }
 
 // this function only execute on server.
-export async function shareMeal(prevState, formData) {
+export async function shareMeal(formData) {
   const meal = {
     title: formData.get("title"),
     summary: formData.get("summary"),
