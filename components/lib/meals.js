@@ -1,44 +1,34 @@
-import fs from "node:fs";
-import sql from "better-sqlite3";
-import slugify from "slugify";
-import xss from "xss";
-const db = sql("meals.db");
-
-export function getMeal(slug) {
-  return db.prepare("SELECT * FROM meals WHERE slug = ?").get(slug);
-}
-
 export default async function saveMeal(meal) {
-  meal.slug = slugify(meal.title, { lower: true });
-  meal.instructions = xss(meal.instructions);
+  // console.log("the meal from sharemeal :", meal);
 
-  const extention = meal.image.name.split(".").pop();
-  const fileName = `${meal.slug}.${extention}`;
+  try {
+    const apiUrl = process.env.DOMAIN || "http://localhost:3000";
 
-  const stream = fs.createWriteStream(`public/images/${fileName}`);
-  const bufferImage = await meal.image.arrayBuffer();
+    const response = await fetch(`${apiUrl}/api/meals/share`, {
+      method: "POST",
+      // body: formData,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(meal),
+    });
 
-  stream.write(Buffer.from(bufferImage), (error) => {
-    if (error) {
-      throw new Error("saving image failed");
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Error response data:", errorData);
+      throw new Error(
+        "Saving meal failed: " + errorData.error || response.statusText
+      );
     }
-  });
 
-  meal.image = `/images/${fileName}`;
+    const data = await response.json();
+    // console.log("Response data:", data);
 
-  db.prepare(
-    `
-    INSERT INTO meals
-      (title, summary, instructions, creator, creator_email, image, slug)
-    VALUES( 
-      @title,
-      @summary,
-      @instructions,
-      @creator,
-      @creator_email,
-      @image,
-      @slug
-    )
-  `
-  ).run(meal);
+    return data;
+  } catch (error) {
+    console.error("Error saving meal:", error);
+    throw new Error(
+      "Saving meal failed: " + (error.message || "Unknown error")
+    );
+  }
 }

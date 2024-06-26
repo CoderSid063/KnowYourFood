@@ -1,4 +1,3 @@
-// pages/api/meals.js
 import { connect } from "@/dbConfig/dbConfig";
 import Meal from "@/models/mealModel";
 import { NextResponse } from "next/server";

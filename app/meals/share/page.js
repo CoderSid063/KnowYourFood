@@ -1,12 +1,35 @@
 "use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import ImagePicker from "@/components/meals/image-picker";
 import styles from "./page.module.css";
 import { shareMeal } from "@/components/lib/actions";
 import MealsFormSubmit from "@/components/meals/meals-form-submit";
-import { useFormState } from "react-dom";
 
 export default function ShareMealPage() {
-  const [state, formAction] = useFormState(shareMeal, { message: null });
+  const [message, setMessage] = useState(null);
+  const router = useRouter();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    // console.log("form data is : ", formData);
+
+    try {
+      const response = await shareMeal(formData);
+      console.log(response);
+
+      if (response.message === "Meal Saved Successfully") {
+        router.push("/meals");
+      } else {
+        setMessage(response.message);
+      }
+    } catch (error) {
+      setMessage(error.message);
+    }
+  };
+
   return (
     <>
       <header className={styles.header}>
@@ -16,8 +39,7 @@ export default function ShareMealPage() {
         <p>Or any other meal you feel needs sharing!</p>
       </header>
       <main className={styles.main}>
-        <form className={styles.form} action={formAction}>
-          {/*  i am sending form data to "shreMeal" method . */}
+        <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.row}>
             <p>
               <label htmlFor="name">Your name</label>
@@ -45,8 +67,8 @@ export default function ShareMealPage() {
               required
             ></textarea>
           </p>
-          <ImagePicker label="your image " name="image" />
-          {state.message && <p>{state.message}</p>}
+          <ImagePicker label="Your image" name="image" />
+          {message && <p>{message}</p>}
           <p className={styles.actions}>
             <MealsFormSubmit />
           </p>
