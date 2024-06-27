@@ -8,7 +8,11 @@ export async function POST(req, res) {
   try {
     const meal = await req.json();
     // console.log("api meal", meal);
-    const newMeal = new Meal(meal);
+
+    const newMeal = new Meal({
+      ...meal,
+      isDummy: meal.isDummy || false, // Ensure isDummy is set or default to false
+    });
     // console.log("newMeal", newMeal);
 
     const savedMeal = await newMeal.save();

@@ -62,6 +62,7 @@ export async function shareMeal(formData) {
   }
 
   meal.image = imageUrl;
+  meal.isDummy = false;
 
   // Validate the meal object fields
   if (

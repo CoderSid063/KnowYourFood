@@ -12,6 +12,7 @@ function Meals() {
     try {
       const response = await fetch("/api/meals", {
         method: "GET",
+        credentials: "include",
       });
       if (!response.ok) {
         throw new Error("Failed to fetch meals");
@@ -49,7 +50,7 @@ export default function MealsPage() {
           Choose your favorite recipe and cook it yourself, its easy and fun.
         </p>
         <p className={style.cta}>
-          <Link href="/meals/share">Share Your favorite Recipe</Link>
+          <Link href="/meals/share">Share Your Favorite Recipe</Link>
         </p>
       </header>
       <main className={style.main}>

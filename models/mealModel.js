@@ -31,6 +31,11 @@ const MealSchema = new mongoose.Schema({
     required: true,
     match: [/.+@.+\..+/, "Please fill a valid email address"],
   },
+  isDummy: {
+    type: Boolean,
+    require: true,
+    default: false,
+  },
 });
 
 // Ensure the model is not re-defined if already defined

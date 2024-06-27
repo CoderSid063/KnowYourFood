@@ -8,7 +8,7 @@ import MainHeaderBackground from "./MainHeaderBackground";
 import Navlink from "./nav-link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 
 export default function MainHeader() {
   const { data: session } = useSession();
