@@ -1,3 +1,6 @@
+import { connect } from "@/dbConfig/dbConfig";
+import Meal from "@/models/mealModel";
+
 export default async function saveMeal(meal) {
   // console.log("the meal from sharemeal :", meal);
 
@@ -31,4 +34,16 @@ export default async function saveMeal(meal) {
       "Saving meal failed: " + (error.message || "Unknown error")
     );
   }
+}
+
+export async function getMeal(mealSlug) {
+  await connect(); // Ensure the database is connected
+
+  try {
+    console.log("Connecting to the database...");
+    const meal = await Meal.findOne({ slug: mealSlug }).lean();
+    // console.log("meal from Db:", meal);
+
+    return meal;
+  } catch (error) {}
 }

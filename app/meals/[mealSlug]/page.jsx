@@ -1,29 +1,18 @@
 import Image from "next/image";
 import styles from "./page.module.css";
-import { getMeal } from "@/components/lib/meals";
 import { notFound } from "next/navigation";
+import { getMeal } from "@/components/lib/meals";
 
-export async function generateMetadata({ params }) {
-  const meal = getMeal(params.mealSlug);
-
-  if (!meal) {
-    notFound();
-  }
-  return {
-    title: meal.title,
-    description: meal.summary,
-  };
-}
-
-export default function MealDetailsPage({ params }) {
-  //getMeal() from sql database
-  const meal = getMeal(params.mealSlug);
+export default async function MealDetailsPage({ params }) {
+  const meal = await getMeal(params.mealSlug);
+  // console.log("The meal after", meal);
 
   if (!meal) {
     notFound();
   }
 
-  meal.instructions = meal.instructions.replace(/\n/g, "<br/>");
+  // meal.instructions = meal.instructions.join("<br/>");
+
   return (
     <>
       <header className={styles.header}>
@@ -39,12 +28,15 @@ export default function MealDetailsPage({ params }) {
         </div>
       </header>
       <main>
-        <p
-          className={styles.instructions}
-          dangerouslySetInnerHTML={{
-            __html: meal.instructions,
-          }}
-        ></p>
+        {Array.isArray(meal.instructions) ? (
+          <ol className={styles.instructions}>
+            {meal.instructions.map((instruction, index) => (
+              <li key={index}>{instruction}</li>
+            ))}
+          </ol>
+        ) : (
+          <p className={styles.instructions}>{meal.instructions}</p>
+        )}
       </main>
     </>
   );
