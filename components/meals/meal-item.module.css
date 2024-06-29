@@ -18,7 +18,7 @@
 .headerText h2 {
   margin: 0;
   font-size: 1.5rem;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .headerText p {
@@ -53,8 +53,9 @@
 }
 
 .actions {
+  display: flex;
+  justify-content: space-around;
   padding: 1rem;
-  text-align: right;
 }
 
 .actions a {
@@ -68,6 +69,20 @@
   text-decoration: none;
 }
 
+.actions button {
+  margin-top: 1rem;
+  padding: 0.6rem 2rem;
+  border-radius: 0.5rem;
+  background: linear-gradient(90deg, #f9572a, #ff9b05);
+  color: #ffffff;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.actions button:hover,
+.actions button:active,
 .actions a:hover,
 .actions a:active {
   background: linear-gradient(90deg, #fd4715, #f9b241);

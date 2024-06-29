@@ -10,10 +10,14 @@ function Meals() {
 
   async function fetchMeals() {
     try {
-      const response = await fetch("/api/meals", {
-        method: "GET",
-        credentials: "include",
-      });
+      const response = await fetch(
+        "/api/meals",
+        { cache: "no-cache" },
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch meals");
       }

@@ -7,9 +7,9 @@ export async function middleware(request) {
   const token = await getToken({ req: request });
   const path = request.nextUrl.pathname; // Get the current request path
 
-  console.log(
-    `Request path: ${path}, Token: ${token ? "exists" : "not found"}`
-  );
+  // console.log(
+  //   `Request path: ${path}, Token: ${token ? "exists" : "not found"}`
+  // );
 
   // Define public paths that do not require authentication
   const isPublicPath =

@@ -3,6 +3,7 @@ import Meal from "@/models/mealModel";
 import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/options";
+import { ObjectId } from "mongodb";
 
 export async function GET() {
   await connect();
@@ -40,6 +41,49 @@ export async function GET() {
       message: "All Meals",
       data: allMeals,
     });
+  } catch (error) {
+    console.error("API Error:", error.message);
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
+
+export async function DELETE(req) {
+  await connect();
+
+  try {
+    const session = getServerSession(authOptions);
+
+    if (!session) {
+      return NextResponse.json(
+        { error: "You must be signed in to delete this content." },
+        { status: 401 }
+      );
+    }
+
+    const url = new URL(req.url);
+    const searchParams = new URLSearchParams(url.searchParams);
+    const id = searchParams.get("id");
+    // console.log("id is :", id);
+    if (!id) {
+      return NextResponse.json(
+        {
+          error: "Meal ID is required",
+        },
+        {
+          ststus: 400,
+        }
+      );
+    }
+
+    const result = await Meal.findByIdAndDelete(new ObjectId(id));
+    if (!result) {
+      return NextResponse.json({ error: "Meal not found." }, { status: 404 });
+    }
+
+    return NextResponse.json(
+      { message: "Meal deleted successfully." },
+      { ststus: 202 }
+    );
   } catch (error) {
     console.error("API Error:", error.message);
     return NextResponse.json({ error: error.message }, { status: 400 });
