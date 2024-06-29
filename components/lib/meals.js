@@ -5,7 +5,8 @@ export default async function saveMeal(meal) {
   // console.log("the meal from sharemeal :", meal);
 
   try {
-    const apiUrl = process.env.DOMAIN || "http://localhost:3000";
+    const apiUrl = process.env.DOMAIN;
+    //const apiUrl = process.env.DOMAIN || "http://localhost:3000";
 
     const response = await fetch(`${apiUrl}/api/meals/share`, {
       method: "POST",
