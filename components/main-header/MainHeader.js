@@ -6,7 +6,6 @@ import style from "./mainheader.module.css";
 import Image from "next/image";
 import MainHeaderBackground from "./MainHeaderBackground";
 import Navlink from "./nav-link";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 
@@ -16,9 +15,8 @@ export default function MainHeader() {
 
   const handleLogout = async () => {
     try {
-      await axios.get("/api/users/logout");
       await signOut();
-      router.push("/sign-in");
+      router.push("/");
     } catch (error) {
       console.log(error.message);
     }
