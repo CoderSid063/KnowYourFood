@@ -5,7 +5,9 @@ export default async function saveMeal(meal) {
   // console.log("the meal from sharemeal :", meal);
 
   try {
-    const apiUrl = process.env.DOMAIN;
+    const apiUrl = `${process.env.DOMAIN}/meals/share`;
+
+    //use this below apiUrl whren u run in your local machine.
     //const apiUrl = process.env.DOMAIN || "http://localhost:3000";
 
     const response = await fetch(`${apiUrl}/api/meals/share`, {
