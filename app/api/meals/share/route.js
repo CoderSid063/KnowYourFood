@@ -7,7 +7,7 @@ export async function POST(req, res) {
 
   try {
     const meal = await req.json();
-    // console.log("api meal", meal);
+    console.log("api meal", meal);
 
     const newMeal = new Meal({
       ...meal,

@@ -5,12 +5,12 @@ export default async function saveMeal(meal) {
   console.log("the meal from sharemeal :", meal);
 
   try {
-    const apiUrl = `${process.env.DOMAIN}/meals/share`;
+    const apiUrl = process.env.DOMAIN;
 
     //use this below apiUrl whren u run in your local machine.
-    //const apiUrl = process.env.DOMAIN || "http://localhost:3000";
+    // const apiUrl =  "http://localhost:3000";
 
-    const response = await fetch("/api/meals/share", {
+    const response = await fetch(`${apiUrl}/api/meals/share`, {
       method: "POST",
       // body: formData,
       headers: {
@@ -18,6 +18,8 @@ export default async function saveMeal(meal) {
       },
       body: JSON.stringify(meal),
     });
+
+    // console.log(response);
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -32,7 +34,7 @@ export default async function saveMeal(meal) {
 
     return data;
   } catch (error) {
-    console.error("Error saving meal:", error);
+    console.error("Error saving meal catch error:", error);
     throw new Error(
       "Saving meal failed: " + (error.message || "Unknown error")
     );
