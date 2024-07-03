@@ -22,7 +22,10 @@ export async function middleware(request) {
 
   //If the user is not authenticated and tries to access a protected path, redirect to login page
   if (!isPublicPath && !token) {
-    return NextResponse.redirect(new URL("/sign-in", request.nextUrl));
+    const callbackUrl = encodeURIComponent(path);
+    return NextResponse.redirect(
+      new URL(`/sign-in?callbackUrl=${callbackUrl}`, request.nextUrl)
+    );
   }
 
   // Allow the request to proceed if the path and authentication status are valid

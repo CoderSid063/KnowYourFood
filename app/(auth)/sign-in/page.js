@@ -8,10 +8,9 @@ import styles from "./login.module.css";
 
 export default function LoginPage() {
   const router = useRouter();
-
-  // const searchParams = useSearchParams();
-  // const callbackUrl = searchParams.get("callbackUrl") || "/";
-  // console.log(callbackUrl);
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
+  console.log(callbackUrl);
 
   const [user, setUser] = useState({
     email: "",
@@ -25,20 +24,21 @@ export default function LoginPage() {
     try {
       setLoading(true);
 
-      const result = await signIn("credentials", {
+      const response = await signIn("credentials", {
         redirect: false,
         email: user.email,
         password: user.password,
       });
 
-      console.log("Sign-in result:", result);
+      console.log("Sign-in result:", response);
 
-      if (result?.error) {
-        console.log("Login failed", result.error);
-      } else {
+      if (response.ok) {
         console.log("Login success");
-        router.push("/");
-        // router.push(callbackUrl); // Redirect to the original page
+        console.log(callbackUrl);
+        // router.push("/");
+        router.push(callbackUrl);
+      } else {
+        console.log("Login failed", response.error);
       }
     } catch (error) {
       console.log("Login failed", error.message);
