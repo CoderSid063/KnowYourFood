@@ -2,15 +2,12 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import styles from "./login.module.css";
 
 export default function LoginPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/";
-  console.log(callbackUrl);
 
   const [user, setUser] = useState({
     email: "",
@@ -34,9 +31,7 @@ export default function LoginPage() {
 
       if (response.ok) {
         console.log("Login success");
-        console.log(callbackUrl);
-        // router.push("/");
-        router.push(callbackUrl);
+        router.push("/");
       } else {
         console.log("Login failed", response.error);
       }
