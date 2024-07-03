@@ -10,7 +10,7 @@ export async function POST(request) {
     const reqBody = await request.json();
     const { username, email, password } = reqBody;
 
-    console.log(reqBody);
+    // console.log(reqBody);
 
     //check if user already exists
     const user = await User.findOne({ email });
@@ -26,20 +26,24 @@ export async function POST(request) {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    const newUser = new User({
+    const newUser = await User.create({
       username,
       email,
       password: hashedPassword,
     });
 
-    const savedUser = await newUser.save();
-    console.log(savedUser);
+    const savedUser = await User.findById(newUser._id).select("-password");
 
-    return NextResponse.json({
-      message: "User created successfully",
-      success: true,
-      savedUser,
-    });
+    // console.log(savedUser);
+
+    return NextResponse.json(
+      {
+        message: "User created successfully",
+        success: true,
+        savedUser,
+      },
+      { status: 201 }
+    );
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
